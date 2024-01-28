@@ -18,18 +18,12 @@ module "apono-svca" {
 }
 
 // agent deployment
-resource "kubernetes_namespace_v1" "apono-namespace" {
-  metadata {
-    name = var.namespace
-  }
-}
-
 resource "helm_release" "apono-connector" {
   name       = "apono-connector"
   repository = local.connector_helm_repo
   chart      = local.connector_helm_chart
   version    = local.connector_helm_chart_version
-  namespace  = kubernetes_namespace_v1.apono-namespace.metadata[0].name
+  namespace  = var.namespace
 
   set {
     name  = "serviceAccount.name"
@@ -58,11 +52,11 @@ resource "helm_release" "apono-connector" {
 
   set {
     name  = "apono.url"
-    value = var.APONO_WEBSOCKET_URL
+    value = var.apono_app_url
   }
 
   set {
     name  = "apono.connectorId"
-    value = var.CONNECTOR_ID
+    value = var.connector_name
   }
 }

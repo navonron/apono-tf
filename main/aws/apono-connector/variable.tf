@@ -17,5 +17,6 @@ variable "eks_snet_ids" { type = list(string) }
 
 variable "namespace" { type = string }
 variable "apono_token" { type = string }
-
+variable "apono_app_url" { type = string }
+variable "connector_name" { type = string }
 
