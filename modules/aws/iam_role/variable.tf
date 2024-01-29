@@ -1,7 +1,13 @@
-variable "iam_role" {
+variable "name" { type = string }
+variable "tags" {
+  type    = map(string)
+  default = null
+}
+variable "assume_role_policy_json" { type = string }
+
+variable "inline_policies" {
   type = list(object({
     name = string
-    tags = optional(map(string), null)
-    assume_role_policy_json = string
+    policy_json = string
   }))
 }
