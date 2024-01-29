@@ -24,7 +24,7 @@ module "iam_role" {
         {
           "Effect": "Allow",
           "Principal": {
-            "Federated": "arn:aws:iam::${local.aws_account_id}:oidc-provider/${replace(module.eks.issuer, "https://", "")}"
+            "Federated": "arn:aws:iam::${data.aws_caller_identity.aws_account.account_id}:oidc-provider/${replace(module.eks.issuer, "https://", "")}"
           },
           "Action": "sts:AssumeRoleWithWebIdentity",
           "Condition": {
@@ -152,70 +152,17 @@ module "iam_role" {
 
 module "iam_role_policy_attachment" {
   source = "../../../modules/aws/iam_role_policy_attachment"
-  role = module.iam_role.name
+  role       = module.iam_role.name
   policy_arn = data.aws_iam_policy.SecurityAudit.arn
 }
 
-
-
-
-
-
-
-
-
-
-
-module "apono-svca" {
-  source      = "../../../modules/aws/apono_eks_svca"
-  aws_account = data.aws_caller_identity.aws_account.account_id
-  eks_issuer  = module.eks.issuer
-  eks_name    = module.eks.name
-  namespace   = var.namespace
+// agent deployment
+module "apono_agent_helm" {
+  source = "../../../modules/apono/agent_helm"
+  namespace = var.namespace
+account_id = data.aws_caller_identity.aws_account.account_id
+eks_name = module.eks.name
+apono_token = var.apono_token
+apono_app_url = var.apono_app_url
+connector_name = var.connector_name
 }
-
-resource "helm_release" "apono-connector" {
-  name       = "apono-connector"
-  repository = local.connector_helm_repo
-  chart      = local.connector_helm_chart
-  version    = local.connector_helm_chart_version
-  namespace  = var.namespace
-
-  set {
-    name  = "serviceAccount.name"
-    value = var.namespace
-  }
-
-  set {
-    name  = "serviceAccount.awsRoleAccountId"
-    value = data.aws_caller_identity.aws_account.account_id
-  }
-
-  set {
-    name  = "serviceAccount.awsRoleName"
-    value = "apono-${var.eks_name}"
-  }
-
-  set {
-    name  = "image.tag"
-    value = "v1.5.3"
-  }
-
-  set {
-    name  = "apono.token"
-    value = var.apono_token
-  }
-
-  set {
-    name  = "apono.url"
-    value = var.apono_app_url
-  }
-
-  set {
-    name  = "apono.connectorId"
-    value = var.connector_name
-  }
-}
-
-
-## add secret to save the connector cridintials to resources on
