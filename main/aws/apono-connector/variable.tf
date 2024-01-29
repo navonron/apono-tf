@@ -13,8 +13,7 @@ variable "eks_tags" {
 
 variable "eks_role_arn" { type = string }
 variable "eks_snet_ids" { type = list(string) }
-
-
+variable "service_account_name" { type = string }
 variable "namespace" { type = string }
 variable "apono_token" { type = string }
 variable "apono_app_url" { type = string }
