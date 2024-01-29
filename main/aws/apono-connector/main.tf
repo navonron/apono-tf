@@ -63,7 +63,7 @@ module "iam_role" {
             {
               Effect = "Allow"
               Action = [ "secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"]
-              Resource = "arn:aws:secretsmanager:*:${local.aws_account_id}:secret:*"
+              Resource = "arn:aws:secretsmanager:*:${data.aws_caller_identity.aws_account.account_id}:secret:*"
               Condition = { "StringEquals": {"aws:ResourceTag/apono-connector-read": "true"} }
             },
           ]
