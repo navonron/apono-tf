@@ -1,0 +1,21 @@
+# Your GCP Project ID
+export PROJECT_ID=
+# The token from your Apono Account
+export APONO_TOKEN=
+# The connector identifier
+export APONO_CONNECTOR_ID=apono-gcp-integration
+# The namespace to deploy the cluster on
+export NAMESPACE=apono
+
+echo "PROJECT_ID: $PROJECT_ID"
+echo "APONO_TOKEN: $APONO_TOKEN"
+echo "APONO_CONNECTOR_ID: $APONO_CONNECTOR_ID"
+echo "NAMESPACE: $NAMESPACE"
+
+
+
+export GCP_SERVICE_ACCOUNT_EMAIL=apono-connector-iam-sa@$PROJECT_ID.iam.gserviceaccount.com && echo "GCP_SERVICE_ACCOUNT_EMAIL: $GCP_SERVICE_ACCOUNT_EMAIL"
+
+
+gcloud services enable cloudresourcemanager.googleapis.com  --project $PROJECT_ID
+

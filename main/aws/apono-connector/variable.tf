@@ -1,7 +1,7 @@
 variable "eks_name" {
   type = string
   validation {
-    condition     = can(regex("^[0-9A-Za-z][A-Za-z0-9\\-_]+$", var.name))
+    condition     = can(regex("^[0-9A-Za-z][A-Za-z0-9\\-_]+$", var.eks_name))
     error_message = "EKS name must be between 1-100 characters in length. Must begin with an alphanumeric character, and must only contain alphanumeric characters, dashes and underscores."
   }
 }

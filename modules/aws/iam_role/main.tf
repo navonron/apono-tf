@@ -6,8 +6,8 @@ resource "aws_iam_role" "role" {
   dynamic "inline_policy" {
     for_each = { for idx, policy in var.inline_policies : idx => policy }
     content {
-      name   = each.value.name
-      policy = jsondecode(each.value.policy_json)
+      name   = inline_policy.value.name
+      policy = inline_policy.value.policy_json
     }
   }
 }
