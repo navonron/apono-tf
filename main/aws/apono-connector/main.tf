@@ -69,23 +69,23 @@ module "iam_role" {
       })
     },
     {
-      name = "iam-access-policy"
+      name = "iam-access-policy",
       policy_json = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
+        "Version" : "2012-10-17",
+        "Statement" : [
           {
-            Effect = "Allow"
-            Action = [
+            "Effect" : "Allow",
+            "Action" : [
               "iam:ListPolicies",
               "iam:CreateInstanceProfile",
               "iam:ListGroups",
               "iam:ListInstanceProfiles"
             ],
-            Resource = "*"
+            "Resource" : "*"
           },
           {
-            Effect = "Allow"
-            Action = [
+            "Effect" : "Allow",
+            "Action" : [
               "iam:CreateInstanceProfile",
               "iam:GetRole",
               "iam:UpdateAssumeRolePolicy",
@@ -119,8 +119,8 @@ module "iam_role" {
               "iam:AttachUserPolicy",
               "iam:DetachUserPolicy",
               "iam:CreateLoginProfile"
-            ]
-            Resource = [
+            ],
+            "Resource" : [
               "arn:aws:iam::*:instance-profile/*",
               "arn:aws:iam::*:role/*",
               "arn:aws:iam::*:group/*",
@@ -131,7 +131,7 @@ module "iam_role" {
       })
     },
     {
-      name        = "ec2-policy"
+      name        = "ec2-policy",
       policy_json = jsonencode({
         "Version" : "2012-10-17",
         "Statement" : [
@@ -145,6 +145,7 @@ module "iam_role" {
     }
   ]
 }
+
 
 module "iam_role_policy_attachment" {
   source     = "../../../modules/aws/iam_role_policy_attachment"

@@ -1,3 +1,21 @@
+data "aws_eks_cluster_auth" "eks_cluster_auth" {
+  name = var.eks_name
+}
+
+provider "kubernetes" {
+  host                   = var.eks_host
+  cluster_ca_certificate = base64decode(var.eks_cert)
+  token                  = data.aws_eks_cluster_auth.eks_cluster_auth.token
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = var.eks_host
+    cluster_ca_certificate = base64decode(var.eks_cert)
+    token                  = data.aws_eks_cluster_auth.eks_cluster_auth.token
+  }
+}
+
 resource "kubernetes_namespace_v1" "namespace" {
   metadata {
     name = var.namespace
